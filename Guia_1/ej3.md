@@ -1,0 +1,2 @@
+Una system call, comprende un cambio de privilegio, es una comunicacion directa y que ejecuta una funcion en maximo privilegio. Se lleva a cabo mediante una interrupcion, lo cual es mas lento que una llamada normal de bibloteca. Esta funcion es expuesta por el sistema operativo.
+Una llamada a una funcion de bibloteca, no requiere este cambio. Es una funcion que puede ser de cualquier otro usuario.

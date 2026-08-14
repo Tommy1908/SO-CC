@@ -1,4 +1,4 @@
-![alt text](image.png)
+![alt text](ej4_image.png)
 
 New -> Ready: Crear todo y ponerla en el scheduler como lista
 Ready -> Running: Sheduler le dio el turno, se carga su PCB
