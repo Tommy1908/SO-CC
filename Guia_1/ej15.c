@@ -13,7 +13,8 @@ void ejecutar_hijo_1() {
     dup2(pipes[WRITE], STDOUT_FILENO);
 
     close(pipes[READ]);
-    close(pipes[WRITE]); // Sin este no va a andar el wc!
+    //close(pipes[WRITE]); // Este se cierra solo al terminal el exec
+    //Preguntar xq anda si lo cierro antes
 
     execlp("ls", "ls", "-al", NULL);
     exit(1); //error
@@ -23,7 +24,7 @@ void ejecutar_hijo_1() {
 void ejecutar_hijo_2() {
     dup2(pipes[READ], STDIN_FILENO);
 
-    close(pipes[READ]);
+    //close(pipes[READ]);
     close(pipes[WRITE]); // Sin este no va a andar el wc!
 
     execlp("wc", "wc", "-l", NULL);
