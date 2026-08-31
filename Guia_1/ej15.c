@@ -11,9 +11,9 @@ int pipes[2];
 // Debe ejecutar "ls -al"
 void ejecutar_hijo_1() {
     dup2(pipes[WRITE], STDOUT_FILENO);
-
+    
+    close(pipes[WRITE]); // Este se cierra solo al terminal el exec
     close(pipes[READ]);
-    //close(pipes[WRITE]); // Este se cierra solo al terminal el exec
     //Preguntar xq anda si lo cierro antes
 
     execlp("ls", "ls", "-al", NULL);
