@@ -24,6 +24,45 @@
 #define READ 0
 #define WRITE 1
 
+void run_child(int (*pipes)[2], int num_pipes, int idx, int p, int pipe_padre[2], int s)
+{
+	close(pipe_padre[READ]);
+	if(idx!=s){
+		close(pipe_padre[WRITE]); // Si no somos el lider, lo cerramos
+	}
+	int write_pipe = pipes[(idx + 1) % num_pipes][WRITE];
+	int read_pipe = pipes[idx % num_pipes][READ];
+	for (int i = 0; i < num_pipes; i++)
+	{
+		if (i != idx)
+			close(pipes[i][READ]);
+		if (i != (idx + 1) % num_pipes)
+			close(pipes[i][WRITE]);
+	}
+
+	for (;;)
+	{
+		int msg;
+		int n_b = read(read_pipe, &msg, sizeof(int));
+		if (n_b == 0)
+			break;
+		printf("HIJO %d PID %d NUM %d\n", idx + 1, getpid(), msg);
+		fflush(stdout);
+		if (idx == s && msg >= p)
+		{
+			write(pipe_padre[WRITE], &msg, sizeof(int));
+			close(pipe_padre[WRITE]);
+			break;
+		}
+		msg++;
+		write(write_pipe, &msg, sizeof(int));
+	}
+	close(read_pipe);
+	close(write_pipe); // SEND EOF to next child who the only waiting for read
+	_exit(0);
+}
+
+
 static void usage(const char *prog)
 {
 	fprintf(stderr, "uso: %s <n> <s> <c> <p>\n", prog);
@@ -83,18 +122,50 @@ int main(int argc, char **argv)
 	leader = s - 1;
 
 	/* TODO: crear los pipes del anillo. */
+	int num_pipes = n;
+	int (*pipes)[2] = calloc(num_pipes, sizeof(int[2]));
+	for (int i = 0; i < num_pipes; i++)
+		pipe(pipes[i]);
 
+	int pipe_padre[2];
+	pipe(pipe_padre);
+	
 	/* TODO: crear los n hijos. */
-
+	
 	/* TODO: programar el trabajo de cada hijo (te va a quedar más prolijo
-	 *       en una función aparte).
-	 */
+	*       en una función aparte).
+	*/
 
+	for (int i = 0; i < n; i++)
+	{
+		if (fork() != 0)
+			continue;
+		run_child(pipes, num_pipes, i, p, pipe_padre, leader);
+	}
+	
+	
+	write(pipes[leader][WRITE], &c, sizeof(int));
+	
+	for (int i = 0; i < num_pipes; i++)
+	{
+		close(pipes[i][WRITE]);
+		close(pipes[i][READ]);
+	}
+	close(pipe_padre[WRITE]);
+	
+	
 	/* TODO: inyectar el valor inicial. */
-
+	
 	/* TODO: Recibir el valor final del distinguido, esperar a que terminen
 	 *       todos los hijos e imprimir el resultado final.
 	 */
 
+	for (int i = 0; i < n; i++)
+		wait(NULL);
+	int final;
+	read(pipe_padre[READ], &final, sizeof(int));
+	printf("PADRE RESULTADO %d\n", final);
+	close(pipe_padre[READ]);
+	free(pipes);
 	return EXIT_SUCCESS;
 }
