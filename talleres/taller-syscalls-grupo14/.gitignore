@@ -1,0 +1,12 @@
+# Estado de la maquina virtual (disco, pid, logs)
+vm/
+
+# Herramientas compartidas: no se versionan aca, las clona make solo
+# desde el repo taller-tools la primera vez.
+/tools/
+/tools.tmp/
+
+# Binarios compilados y trazas
+bin/relay_espejo
+bin/cadenamando
+trace.txt

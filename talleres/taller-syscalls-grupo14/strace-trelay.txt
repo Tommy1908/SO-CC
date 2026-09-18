@@ -1,0 +1,71 @@
+[PADRE 974] Lanzando 5 procesos
+[HIJO 975] Esperando señal...
+[HIJO 976] Esperando señal...
+[HIJO 977] Esperando señal...
+[HIJO 978] Esperando señal...
+[HIJO 979] Esperando señal...
+[PADRE 974] Enviando señales a los hijos
+. [HIJO 975] Recibió SIGUSR1
+. [HIJO 976] Recibió SIGUSR1
+. [HIJO 977] Recibió SIGUSR1
+. [HIJO 978] Recibió SIGUSR1
+. [HIJO 979] Recibió SIGUSR1
+[PADRE 974] Esperando a que terminen los hijos
+[PADRE 974] Todos los hijos terminaron
+
+--- traza completa en trace.txt ---
+--- filtrando por: rt_sigaction|rt_sigprocmask|rt_sigsuspend|pause|kill|clone|fork|wait4|waitid|exit_group|--- SIG ---
+
+974   clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x2c1e4650) = 975
+974   clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x2c1e4650) = 976
+975   rt_sigaction(SIGUSR1, {sa_handler=0x401890, sa_mask=[USR1], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x4089e0},  <unfinished ...>
+974   clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD <unfinished ...>
+975   <... rt_sigaction resumed>{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+974   <... clone resumed>, child_tidptr=0x2c1e4650) = 977
+976   rt_sigaction(SIGUSR1, {sa_handler=0x401890, sa_mask=[USR1], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x4089e0},  <unfinished ...>
+974   clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD <unfinished ...>
+976   <... rt_sigaction resumed>{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+977   rt_sigaction(SIGUSR1, {sa_handler=0x401890, sa_mask=[USR1], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x4089e0},  <unfinished ...>
+974   <... clone resumed>, child_tidptr=0x2c1e4650) = 978
+977   <... rt_sigaction resumed>{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+975   pause( <unfinished ...>
+974   clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD <unfinished ...>
+978   rt_sigaction(SIGUSR1, {sa_handler=0x401890, sa_mask=[USR1], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x4089e0},  <unfinished ...>
+974   <... clone resumed>, child_tidptr=0x2c1e4650) = 979
+976   pause( <unfinished ...>
+978   <... rt_sigaction resumed>{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+977   pause( <unfinished ...>
+979   rt_sigaction(SIGUSR1, {sa_handler=0x401890, sa_mask=[USR1], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x4089e0}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+978   pause( <unfinished ...>
+979   pause( <unfinished ...>
+974   kill(975, SIGUSR1)                = 0
+975   <... pause resumed>)              = ? ERESTARTNOHAND (To be restarted if no handler)
+975   --- SIGUSR1 {si_signo=SIGUSR1, si_code=SI_USER, si_pid=974, si_uid=1000} ---
+975   exit_group(0)                     = ?
+974   --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=975, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+974   kill(976, SIGUSR1)                = 0
+976   <... pause resumed>)              = ? ERESTARTNOHAND (To be restarted if no handler)
+976   --- SIGUSR1 {si_signo=SIGUSR1, si_code=SI_USER, si_pid=974, si_uid=1000} ---
+976   exit_group(0)                     = ?
+974   --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=976, si_uid=1000, si_status=0, si_utime=0, si_stime=1 /* 0.01 s */} ---
+974   kill(977, SIGUSR1)                = 0
+977   <... pause resumed>)              = ? ERESTARTNOHAND (To be restarted if no handler)
+977   --- SIGUSR1 {si_signo=SIGUSR1, si_code=SI_USER, si_pid=974, si_uid=1000} ---
+977   exit_group(0)                     = ?
+974   --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=977, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+974   kill(978, SIGUSR1)                = 0
+978   <... pause resumed>)              = ? ERESTARTNOHAND (To be restarted if no handler)
+978   --- SIGUSR1 {si_signo=SIGUSR1, si_code=SI_USER, si_pid=974, si_uid=1000} ---
+978   exit_group(0)                     = ?
+974   --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=978, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+974   kill(979, SIGUSR1)                = 0
+979   <... pause resumed>)              = ? ERESTARTNOHAND (To be restarted if no handler)
+979   --- SIGUSR1 {si_signo=SIGUSR1, si_code=SI_USER, si_pid=974, si_uid=1000} ---
+979   exit_group(0)                     = ?
+974   --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=979, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+974   wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 975
+974   wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 976
+974   wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 977
+974   wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 978
+974   wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 979
+974   exit_group(0)                     = ?

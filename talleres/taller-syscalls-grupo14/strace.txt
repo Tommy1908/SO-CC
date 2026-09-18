@@ -1,0 +1,115 @@
+[PADRE 4612] Lanzando 3 procesos
+[HIJO 4613] Esperando señal...
+[HIJO 4615] Esperando señal...
+[HIJO 4614] Esperando señal...
+[PADRE 4612] Enviando señales a los hijos
+. [HIJO 4613] Recibió SIGUSR1
+. [HIJO 4614] Recibió SIGUSR1
+. [HIJO 4615] Recibió SIGUSR1
+[PADRE 4612] Esperando a que terminen los hijos
+[PADRE 4612] Todos los hijos terminaron
+
+--- traza completa en trace.txt ---
+--- filtrando por: . ---
+
+4612  execve("./bin/relay", ["./bin/relay", "3"], 0x7fffb3645010 /* 19 vars */) = 0
+4612  brk(NULL)                         = 0x3771d000
+4612  brk(0x3771dd00)                   = 0x3771dd00
+4612  arch_prctl(ARCH_SET_FS, 0x3771d380) = 0
+4612  set_tid_address(0x3771d650)       = 4612
+4612  set_robust_list(0x3771d660, 24)   = 0
+4612  rseq(0x3771dca0, 0x20, 0, 0x53053053) = 0
+4612  prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+4612  readlink("/proc/self/exe", "/taller/bin/relay", 4096) = 17
+4612  getrandom("\x82\x32\xfd\xf0\x05\x7f\x55\xe9", 8, GRND_NONBLOCK) = 8
+4612  brk(NULL)                         = 0x3771dd00
+4612  brk(0x3773ed00)                   = 0x3773ed00
+4612  brk(0x3773f000)                   = 0x3773f000
+4612  mprotect(0x4a3000, 16384, PROT_READ) = 0
+4612  getpid()                          = 4612
+4612  newfstatat(1, "", {st_mode=S_IFIFO|0600, st_size=0, ...}, AT_EMPTY_PATH) = 0
+4612  write(1, "[PADRE 4612] Lanzando 3 procesos"..., 33) = 33
+4612  clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x3771d650) = 4613
+4613  set_robust_list(0x3771d660, 24 <unfinished ...>
+4612  clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD <unfinished ...>
+4613  <... set_robust_list resumed>)    = 0
+4612  <... clone resumed>, child_tidptr=0x3771d650) = 4614
+4612  clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD <unfinished ...>
+4613  rt_sigaction(SIGUSR1, {sa_handler=0x401890, sa_mask=[USR1], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x4089e0},  <unfinished ...>
+4614  set_robust_list(0x3771d660, 24 <unfinished ...>
+4612  <... clone resumed>, child_tidptr=0x3771d650) = 4615
+4613  <... rt_sigaction resumed>{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+4615  set_robust_list(0x3771d660, 24 <unfinished ...>
+4614  <... set_robust_list resumed>)    = 0
+4612  clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=1, tv_nsec=0},  <unfinished ...>
+4615  <... set_robust_list resumed>)    = 0
+4613  getpid( <unfinished ...>
+4615  rt_sigaction(SIGUSR1, {sa_handler=0x401890, sa_mask=[USR1], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x4089e0},  <unfinished ...>
+4614  rt_sigaction(SIGUSR1, {sa_handler=0x401890, sa_mask=[USR1], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x4089e0},  <unfinished ...>
+4615  <... rt_sigaction resumed>{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+4613  <... getpid resumed>)             = 4613
+4615  getpid( <unfinished ...>
+4614  <... rt_sigaction resumed>{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+4615  <... getpid resumed>)             = 4615
+4613  write(1, "[HIJO 4613] Esperando se\303\261al...\n", 32 <unfinished ...>
+4615  write(1, "[HIJO 4615] Esperando se\303\261al...\n", 32 <unfinished ...>
+4614  getpid( <unfinished ...>
+4613  <... write resumed>)              = 32
+4614  <... getpid resumed>)             = 4614
+4613  pause( <unfinished ...>
+4615  <... write resumed>)              = 32
+4614  write(1, "[HIJO 4614] Esperando se\303\261al...\n", 32 <unfinished ...>
+4615  pause( <unfinished ...>
+4614  <... write resumed>)              = 32
+4614  pause( <unfinished ...>
+4612  <... clock_nanosleep resumed>0x7ffeb1ba4040) = 0
+4612  getpid()                          = 4612
+4612  write(1, "[PADRE 4612] Enviando se\303\261ales a"..., 43) = 43
+4612  kill(4613, SIGUSR1)               = 0
+4613  <... pause resumed>)              = ? ERESTARTNOHAND (To be restarted if no handler)
+4612  clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=0, tv_nsec=100000000},  <unfinished ...>
+4613  --- SIGUSR1 {si_signo=SIGUSR1, si_code=SI_USER, si_pid=4612, si_uid=1000} ---
+4613  write(1, ".", 1)                  = 1
+4613  rt_sigreturn({mask=[]})           = -1 EINTR (Interrupted system call)
+4613  getpid()                          = 4613
+4613  write(1, " [HIJO 4613] Recibi\303\263 SIGUSR1\n", 30) = 30
+4613  exit_group(0)                     = ?
+4613  +++ exited with 0 +++
+4612  <... clock_nanosleep resumed>NULL) = ? ERESTART_RESTARTBLOCK (Interrupted by signal)
+4612  --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=4613, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+4612  restart_syscall(<... resuming interrupted clock_nanosleep ...>) = 0
+4612  kill(4614, SIGUSR1)               = 0
+4614  <... pause resumed>)              = ? ERESTARTNOHAND (To be restarted if no handler)
+4612  clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=0, tv_nsec=100000000},  <unfinished ...>
+4614  --- SIGUSR1 {si_signo=SIGUSR1, si_code=SI_USER, si_pid=4612, si_uid=1000} ---
+4614  write(1, ".", 1)                  = 1
+4614  rt_sigreturn({mask=[]})           = -1 EINTR (Interrupted system call)
+4614  getpid()                          = 4614
+4614  write(1, " [HIJO 4614] Recibi\303\263 SIGUSR1\n", 30) = 30
+4614  exit_group(0)                     = ?
+4614  +++ exited with 0 +++
+4612  <... clock_nanosleep resumed>NULL) = ? ERESTART_RESTARTBLOCK (Interrupted by signal)
+4612  --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=4614, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+4612  restart_syscall(<... resuming interrupted clock_nanosleep ...>) = 0
+4612  kill(4615, SIGUSR1)               = 0
+4615  <... pause resumed>)              = ? ERESTARTNOHAND (To be restarted if no handler)
+4612  clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=0, tv_nsec=100000000},  <unfinished ...>
+4615  --- SIGUSR1 {si_signo=SIGUSR1, si_code=SI_USER, si_pid=4612, si_uid=1000} ---
+4615  write(1, ".", 1)                  = 1
+4615  rt_sigreturn({mask=[]})           = -1 EINTR (Interrupted system call)
+4615  getpid()                          = 4615
+4615  write(1, " [HIJO 4615] Recibi\303\263 SIGUSR1\n", 30) = 30
+4615  exit_group(0)                     = ?
+4615  +++ exited with 0 +++
+4612  <... clock_nanosleep resumed>NULL) = ? ERESTART_RESTARTBLOCK (Interrupted by signal)
+4612  --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=4615, si_uid=1000, si_status=0, si_utime=0, si_stime=0} ---
+4612  restart_syscall(<... resuming interrupted clock_nanosleep ...>) = 0
+4612  getpid()                          = 4612
+4612  write(1, "[PADRE 4612] Esperando a que ter"..., 48) = 48
+4612  wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 4613
+4612  wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 4614
+4612  wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 4615
+4612  getpid()                          = 4612
+4612  write(1, "[PADRE 4612] Todos los hijos ter"..., 40) = 40
+4612  exit_group(0)                     = ?
+4612  +++ exited with 0 +++
