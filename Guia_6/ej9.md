@@ -4,35 +4,55 @@ Suponga que un proceso abre el directorio /home que está sobre una partición d
 Suponiendo que tiene la función auxiliar Ext2FSInode load_inode(int inode_number) que dado un número de inodo devuelve la estructura del inodo, escriba el pseudocódigo que le permita obtener el nombre del directorio (home) a partir del descriptor de archivo recibido.
 
 ```c
-obtener_nombre_de_directorio_actual(fd){
-    fs_dir_entry entry;
-    bool found_me, found_parent;
-    int me, parent;
-    index=0;
-    while(true){ // Termina porque tengo garantizado que existe, como no es un inodo no podemos saber el size
-        read(entry,fd, max_possible_size); // No sabemos el tamaño por el nombre, pero en este caso podriamos hacer match por tamaño quizas, es "." lo que buscamos. De todas formas..
-        if(entry.size == 1 && strcmp(entry.name == '.') == 0){
-            me = entry.inode
-            found_me=1
+char* obtener_nombre(int fd) {
+    int me =-1, parent = -1;
+    char buffer[BLOCK_SIZE];
+    int bytes;
+
+    // Buscar "." y ".." en el directorio
+    while ((bytes = read(fd, buffer, BLOCK_SIZE)) > 0) {
+        int offset = 0;
+
+        while (offset < bytes) {
+            Ext2FSDirEntry* entry = (Ext2FSDirEntry*)(buffer + offset);
+
+            if (entry->name_length == 1 && strncmp(entry->name, ".", 1) == 0) {
+                me = entry->inode;
+            }
+
+            if (entry->name_length == 2 && strncmp(entry->name, "..", 2) == 0) {
+                parent = entry->inode;
+            }
+
+            offset += entry->record_length; // supongamos que siempre leemos todo bien
         }
-        if(entry.size == 2 && strcmp(entry.name == '..') == 0){
-            parent = entry.inode
-            found_me=1
-        }
-        if(found_me&&found_parent){
+
+        if (me != -1 && parent != -1) // Es condicion de corte, siempre existen
             break;
-        }
-
-        index += record_length;
     }
 
-    Ext2FSInode parent load_inode(parent); // ahora tenemos que buscar la entry cuyo inodo sea el numero del neustro
-    while(true){ // Termina porque tengo garantizado que yo existo
-        read(entry,fd, max_possible_size);
-        if(entry.inode == me){
-            return entry.name
+    Ext2FSInode parent_inode = load_inode(parent);
+
+    int cantidad = parent_inode.size / BLOCK_SIZE;
+
+    for (int i = 0; i < cantidad; i++) {
+        int block_addr = get_block_address(&parent_inode, i);
+
+        read_block(block_addr, buffer);
+
+        int offset = 0;
+
+        while (offset < BLOCK_SIZE) {
+            Ext2FSDirEntry* entry = (Ext2FSDirEntry*)(buffer + offset);
+
+            if (entry->inode == me) {
+                return copiar_nombre(entry->name, entry->name_length);
+            }
+
+            offset += entry->record_length;
         }
     }
+
+    return NULL;
 }
-
 ```
