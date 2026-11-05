@@ -22,7 +22,7 @@ semaphore terminado;
 driver_write(void *data){
     sema_wait(&mutex);
 
-    OUT(LOC_TEST_POINTER, data->string);
+    OUT(LOC_TEST_POINTER, data->string); // tendria que haber copiado primero los datos a un buffer con el copy from user y usar un kmalloc para los datos
     OUT(LOC_TEXT_SIZE, data->size);
     OUT(LOC_CTRL, START);
 
